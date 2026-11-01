@@ -394,6 +394,7 @@ local function AP_Press()
     if not AutoParry.Enabled then return end
 
     if AutoParry.Mode == "PC" then
+        -- PC TIDAK DIUBAH
         local key = AP_Keys[AutoParry.KeyIndex][2]
 
         pcall(function()
@@ -406,23 +407,17 @@ local function AP_Press()
         local pg = LP:FindFirstChild("PlayerGui")
         local mobileGui = pg and pg:FindFirstChild("Survivor-mob")
         local controls = mobileGui and mobileGui:FindFirstChild("Controls")
-        local action = controls and (
-            controls:FindFirstChild("action")
-            or controls:FindFirstChild("check")
-        )
+        local guiMob = controls and controls:FindFirstChild("Gui-mob")
+        local back = guiMob and guiMob:FindFirstChild("back", true)
 
-        if action and action:IsA("GuiButton") and action.Visible then
+        if back and back:IsA("GuiButton") and back.Visible then
             pcall(function()
                 if firesignal then
-                    firesignal(action.MouseButton1Down)
+                    firesignal(back.MouseButton1Down)
                     task.wait(0.05)
-                    firesignal(action.MouseButton1Up)
-                elseif getconnections then
-                    for _, connection in ipairs(getconnections(action.Activated)) do
-                        pcall(function()
-                            connection:Fire()
-                        end)
-                    end
+                    firesignal(back.MouseButton1Up)
+                else
+                    back:Activate()
                 end
             end)
         end
