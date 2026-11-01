@@ -392,6 +392,7 @@ local AP_Keys = {
 
 local function AP_Press()
     if not AutoParry.Enabled then return end
+    print("[HANX HUB] AP_Press terpanggil! Mode:", AutoParry.Mode)
 
     if AutoParry.Mode == "PC" then
         -- PC TIDAK DIUBAH
