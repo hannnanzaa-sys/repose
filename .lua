@@ -405,6 +405,18 @@ local function AP_Press()
         end)
 
     elseif AutoParry.Mode == "HP" then
+        local pg = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+
+for _, v in ipairs(pg:GetDescendants()) do
+    if v:IsA("ImageButton") or v:IsA("TextButton") then
+        print(
+            "NAME:", v.Name,
+            "| PATH:", v:GetFullName(),
+            "| IMAGE:", v:IsA("ImageButton") and v.Image or "-",
+            "| TEXT:", v:IsA("TextButton") and v.Text or "-"
+        )
+    end
+end
         local pg = LP:FindFirstChild("PlayerGui")
         local mobileGui = pg and pg:FindFirstChild("Survivor-mob")
         local controls = mobileGui and mobileGui:FindFirstChild("Controls")
