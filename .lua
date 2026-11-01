@@ -1289,23 +1289,70 @@ local SplashSub = Instance.new("TextLabel"); SplashSub.Size = UDim2.new(1, 0, 0,
 local BarBg = Instance.new("Frame"); BarBg.Size = UDim2.new(1, -40, 0, 6); BarBg.Position = UDim2.new(0, 20, 1, -20); BarBg.BackgroundColor3 = Theme.Sidebar; BarBg.BorderSizePixel = 0; BarBg.Parent = SplashBox; corner(BarBg, 3)
 local BarFill = Instance.new("Frame"); BarFill.Size = UDim2.fromScale(0, 1); BarFill.BackgroundColor3 = Theme.Neon; BarFill.BorderSizePixel = 0; BarFill.Parent = BarBg; corner(BarFill, 3)
 
-task.spawn(function()
-    TweenService:Create(BarFill, TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.fromScale(1, 1)}):Play()
-    task.wait(1.6)
-    TweenService:Create(SplashBox, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
-    TweenService:Create(SplashTitle, TweenInfo.new(0.3), {TextTransparency = 1}):Play()
-    TweenService:Create(SplashSub, TweenInfo.new(0.3), {TextTransparency = 1}):Play()
-    TweenService:Create(BarBg, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
-    TweenService:Create(BarFill, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
-    task.wait(0.3)
-    SplashGui:Destroy()
-    
-    Screen.Enabled = true
-    Window.Size = UDim2.fromOffset(0, 0)
-    task.wait(0.1)
-    TweenService:Create(Window, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.fromOffset(580, 420)}):Play()
-    
-    task.wait(0.4)
-    SelectTab(1)
-    print("[HANX HUB] Loaded.")
-end)
+-- HANX HUB CUSTOM NOTIFICATION
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LP = Players.LocalPlayer
+
+local NotifyGui = Instance.new("ScreenGui")
+NotifyGui.Name = "HANXNotification"
+NotifyGui.ResetOnSpawn = false
+NotifyGui.DisplayOrder = 999
+NotifyGui.Parent = game:GetService("CoreGui")
+
+local function HANXNotify(title, message, duration)
+    duration = duration or 5
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 270, 0, 75)
+    frame.Position = UDim2.new(1, 300, 1, -100)
+    frame.AnchorPoint = Vector2.new(1, 1)
+    frame.BackgroundColor3 = Color3.fromRGB(28, 20, 30)
+    frame.BorderSizePixel = 0
+    frame.Parent = NotifyGui
+
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+    local stroke = Instance.new("UIStroke", frame)
+    stroke.Color = Color3.fromRGB(255, 95, 168)
+    stroke.Thickness = 1.5
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, -20, 0, 25)
+    titleLabel.Position = UDim2.new(0, 12, 0, 8)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = "✦ " .. title
+    titleLabel.TextColor3 = Color3.fromRGB(255, 95, 168)
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 14
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = frame
+
+    local desc = Instance.new("TextLabel")
+    desc.Size = UDim2.new(1, -20, 0, 30)
+    desc.Position = UDim2.new(0, 12, 0, 35)
+    desc.BackgroundTransparency = 1
+    desc.Text = message
+    desc.TextColor3 = Color3.fromRGB(240, 230, 240)
+    desc.Font = Enum.Font.Gotham
+    desc.TextSize = 12
+    desc.TextXAlignment = Enum.TextXAlignment.Left
+    desc.Parent = frame
+
+    TweenService:Create(frame, TweenInfo.new(0.35), {
+        Position = UDim2.new(1, -15, 1, -25)
+    }):Play()
+
+    task.delay(duration, function()
+        if frame.Parent then
+            local tween = TweenService:Create(frame, TweenInfo.new(0.35), {
+                Position = UDim2.new(1, 300, 1, -25)
+            })
+            tween:Play()
+            tween.Completed:Wait()
+            frame:Destroy()
+        end
+    end)
+end
+
+HANXNotify("HANX HUB", "Script Successfully Loaded!", 5)
